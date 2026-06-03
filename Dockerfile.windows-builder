@@ -1,0 +1,45 @@
+FROM ubuntu:24.04
+
+# Avoid tzdata interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+ENV TZ=Etc/UTC
+
+# Install base dependencies and MinGW-w64 cross-compiler
+RUN apt-get update && apt-get install -y \
+    curl \
+    wget \
+    git \
+    build-essential \
+    pkg-config \
+    mingw-w64 \
+    nsis \
+    zip \
+    unzip \
+    tar \
+    && rm -rf /var/lib/apt/lists/*
+
+# Install Go 1.26.0
+RUN arch=$(uname -m) && \
+    if [ "$arch" = "x86_64" ]; then \
+        wget https://go.dev/dl/go1.26.0.linux-amd64.tar.gz -O go.tar.gz; \
+    elif [ "$arch" = "aarch64" ]; then \
+        wget https://go.dev/dl/go1.26.0.linux-arm64.tar.gz -O go.tar.gz; \
+    fi && \
+    tar -C /usr/local -xzf go.tar.gz && \
+    rm go.tar.gz
+
+ENV PATH=$PATH:/usr/local/go/bin:/root/go/bin
+
+# Install Node.js (20.x) and pnpm
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g pnpm
+
+# Install Wails CLI
+RUN go install github.com/wailsapp/wails/v2/cmd/wails@latest
+
+# Set working directory
+WORKDIR /app
+
+# The default command will just be bash, the subagent will run make commands
+CMD ["/bin/bash"]

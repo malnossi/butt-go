@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=Atheer
+Comment=Live Audio Broadcasting Engine
+Exec=Atheer
+Icon=Atheer
+Type=Application
+Categories=AudioVideo;Audio;
+Terminal=false
+StartupNotify=true
+StartupWMClass=atheer

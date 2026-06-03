@@ -1,0 +1,7 @@
+{
+  "go.toolsEnvVars": {
+    "CGO_CFLAGS": "-I/opt/homebrew/include",
+    "CGO_LDFLAGS": "-L/opt/homebrew/lib -lportaudio -lmp3lame -lfdk-aac -lopus -logg -lvorbis -lvorbisenc -Wl,-w",
+    "PKG_CONFIG_PATH": "/opt/homebrew/lib/pkgconfig"
+  }
+}
